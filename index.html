@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Primer Año Juntos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(to right, #ff758c 0%, #ff7eb3 100%);
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .memory-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .memory-card h3 {
+            color: #ff758c;
+            margin-bottom: 15px;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .memory-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .memory-photo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        /* Carousel Styles */
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ff758c;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-control:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .carousel-control.prev {
+            left: 10px;
+        }
+
+        .carousel-control.next {
+            right: 10px;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            border: none;
+        }
+
+        .carousel-indicator.active {
+            background: #ff758c;
+        }
+
+        .love-letter {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px auto;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .love-letter p {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .heart {
+            color: #ff758c;
+            font-size: 24px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .memory-card {
+                padding: 15px;
+            }
+
+            .carousel {
+                height: 300px;
+            }
+
+            .image-container {
+                height: 200px;
+            }
+        }
+        .video-container {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.memory-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Modificar el modal para soportar videos */
+.modal-content video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-height: 80vh;
+}
+    </style>
+</head>
+<body>
+    <header class="animate__animated animate__fadeIn">
+        <h1>REBECA & RICHARD</h1>
+        <h1>Nuestro Primer Año Juntos</h1>
+        <p class="subtitle">365 días de amor, risas y momentos inolvidables</p>
+        <div class="heart">❤️❤️❤️</div>
+    </header>
+
+    <div class="container">
+        <div class="timeline">
+            <div class="memory-card animate__animated animate__fadeInLeft">
+                <h3>Nuestro Primer Encuentro</h3>
+                <div class="image-container">
+                    <img src="Manos_R.jpg" alt="Nuestro primer encuentro" class="memory-photo">
+                </div>
+                <p>Desde el primer momento que te vi, supe que eras especial. Aquel día quedó grabado en mi memoria para siempre.</p>
+            </div>
+
+            <div class="memory-card animate__animated animate__fadeInRight">
+                <h3>Nuestra Primera Cita</h3>
+                <div class="image-container">
+                    <img src="SP.jpg" alt="Nuestra primera cita" class="memory-photo">
+                </div>
+                <p>Los nervios y las mariposas en el estómago, esa conexión instantánea que tuvimos desde el segundo uno en que nos vimos a los ojos. Siendo contigo cada minuto aún mas mágico.</p>
+            </div>
+
+            <div class="memory-card animate__animated animate__fadeInRight">
+                <h3>Nuestros Momentos en Video</h3>
+                <div class="video-container">
+                    <video class="memory-video" controls>
+                        <source src="Video.mp4" type="video/mp4">
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+                </div>
+                <p>Cada momento capturado en video es un tesoro que guardaremos para siempre en nuestros corazones.</p>
+            </div>
+
+            <div class="memory-card animate__animated animate__fadeInLeft">
+                <h3>Momentos Especiales</h3>
+                <div class="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="Pacasmayo.jpg" alt="Momentos especiales juntos">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="Iglesia_Tru.jpg" alt="Momentos especiales juntos">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="mirada.jpg" alt="Momentos especiales juntos">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="Rumbo_a_pacas.jpg" alt="Momentos especiales juntos">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="SP_despedida1.jpg" alt="Momentos especiales juntos">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pollito.jpg" alt="Momentos especiales juntos">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="MIrada_pacasmayo.jpg" alt="Momentos especiales juntos">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="Mega.jpg" alt="Momentos especiales juntos">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="Flores_bus.jpg" alt="Momentos especiales juntos">
+                        </div>
+                    </div>
+                    <button class="carousel-control prev">❮</button>
+                    <button class="carousel-control next">❯</button>
+                    <div class="carousel-indicators"></div>
+                </div>
+                <p>Cada momento contigo se convierte en un recuerdo precioso. Las risas, los abrazos, incluso los pequeños desacuerdos nos han hecho más fuertes.</p>
+            </div>
+        </div>
+
+        <div class="love-letter animate__animated animate__fadeIn">
+            <h2>Mi Amor,</h2>
+            <p>Ha pasado un año desde que el destino nos unió, y cada día me enamoro más de ti. Tu sonrisa ilumina mis días, tu amor me hace mejor persona, y no puedo imaginar mi vida sin ti.</p>
+            <p>Gracias por estos 365 días de amor incondicional, por ser mi compañera, mi mejor amiga, y mi amor.</p>
+            <p>Este es solo el comienzo de nuestra historia...</p>
+            <p class="signature">Con todo mi amor,<br>Richard</p>
+        </div>
+    </div>
+
+    <div class="modal">
+        <button class="modal-close">&times;</button>
+        <div class="modal-content">
+            <img src="" alt="Imagen ampliada">
+        </div>
+    </div>
+
+    <footer>
+        <p>Feliz Primer Aniversario ❤️</p>
+        <p class="date">03 de Enero, 2025</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carousel functionality
+            const carousel = document.querySelector('.carousel');
+            const carouselInner = carousel.querySelector('.carousel-inner');
+            const items = carousel.querySelectorAll('.carousel-item');
+            const prevButton = carousel.querySelector('.prev');
+            const nextButton = carousel.querySelector('.next');
+            const indicators = carousel.querySelector('.carousel-indicators');
+            
+            let currentIndex = 0;
+            const totalItems = items.length;
+
+            // Create indicators
+            items.forEach((_, index) => {
+                const indicator = document.createElement('button');
+                indicator.classList.add('carousel-indicator');
+                if (index === 0) indicator.classList.add('active');
+                indicator.addEventListener('click', () => goToSlide(index));
+                indicators.appendChild(indicator);
+            });
+
+            const allIndicators = carousel.querySelectorAll('.carousel-indicator');
+
+            function updateIndicators() {
+                allIndicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            function goToSlide(index) {
+                currentIndex = index;
+                carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+                updateIndicators();
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % totalItems;
+                goToSlide(currentIndex);
+            }
+
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                goToSlide(currentIndex);
+            }
+
+            // Event listeners for carousel
+            nextButton.addEventListener('click', nextSlide);
+            prevButton.addEventListener('click', prevSlide);
+
+            // Auto-advance carousel
+            let intervalId = setInterval(nextSlide, 5000);
+
+            // Pause auto-advance on hover
+            carousel.addEventListener('mouseenter', () => clearInterval(intervalId));
+            carousel.addEventListener('mouseleave', () => {
+                clearInterval(intervalId);
+                intervalId = setInterval(nextSlide, 5000);
+            });
+
+            // Modal functionality for memory photos
+            const modal = document.querySelector('.modal');
+            const modalImg = modal.querySelector('img');
+            const closeButton = modal.querySelector('.modal-close');
+            const memoryPhotos = document.querySelectorAll('.memory-photo');
+
+            memoryPhotos.forEach(photo => {
+                photo.addEventListener('click', () => {
+                    modalImg.src = photo.src;
+                    modal.classList.add('active');
+                });
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') prevSlide();
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
